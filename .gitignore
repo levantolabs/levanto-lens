@@ -1,0 +1,8 @@
+node_modules
+.next
+out
+.env*.local
+data/quickdraw
+*.tsbuildinfo
+next-env.d.ts
+.vercel

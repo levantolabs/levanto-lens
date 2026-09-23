@@ -1,0 +1,170 @@
+@import "tailwindcss";
+
+/*
+ * Runtime two-ink system, copied from levanto-landing (the live homepage,
+ * /thesis and /benchmarks): blue ink on paper, Geist Sans set tight, Playfair
+ * for the italic accent, mono uppercase tags. See docs/design-source.md.
+ *
+ * The legacy pine/cream names are kept as aliases onto the new palette, the
+ * same trick the landing's benchmarks page uses to put older components on
+ * the blue-on-ivory system without forking them.
+ */
+@theme {
+  --color-blue: #1438d4;
+  --color-deep: #0c258f;
+  --color-paper: #f4f0e5;
+  --color-card: #fbf9f2;
+  --color-tint: #e7eafa;
+  --color-vermilion: #be5b36;
+  --color-vermilion-deep: #8f3a1b;
+  --color-moss: #0b5a4e;
+  --color-hair: #1438d433;
+  --color-faint: #1438d41a;
+  --color-wash: #1438d40a;
+
+  /* legacy aliases */
+  --color-pine: #1438d4;
+  --color-pine-deep: #0c258f;
+  --color-sage: #1438d4;
+  --color-sage-bright: #1438d4;
+  --color-cream: #f4f0e5;
+  --color-cream-soft: #fbf9f2;
+  --color-hairline: #1438d41a;
+  --color-hairline-dark: #1438d433;
+  --color-ink: #1438d4;
+  --color-ink-soft: #1438d4b3;
+  --color-ember: #be5b36;
+  --color-console: #1438d4;
+  --color-console-line: #f4f0e533;
+
+  --font-display: var(--font-geist-sans), system-ui, sans-serif;
+  --font-sans: var(--font-geist-sans), system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, "SF Mono", monospace;
+}
+
+:root {
+  --blue: #1438d4;
+  --paper: #f4f0e5;
+  --hair: #1438d433;
+  --faint: #1438d41a;
+  --wash: #1438d40a;
+}
+
+body {
+  background: var(--paper);
+  color: var(--blue);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  letter-spacing: -0.01em;
+}
+
+::selection {
+  background: var(--blue);
+  color: var(--paper);
+}
+
+button { font: inherit; cursor: pointer; }
+button:disabled { cursor: default; }
+a, button { -webkit-tap-highlight-color: transparent; }
+a:focus-visible, button:focus-visible { outline: 2px solid currentColor; outline-offset: 4px; }
+
+/* The accent: Playfair, medium, tight. Landing: `.root em`. */
+em, .accent {
+  font-family: var(--font-playfair), Georgia, serif;
+  font-style: italic;
+  font-weight: 500;
+  letter-spacing: -0.055em;
+}
+
+/* Mono uppercase tag. Landing: `.tag` / `.eyebrow` (500 10px, .14em). */
+.tag, .eyebrow {
+  font-family: var(--font-mono);
+  font-weight: 500;
+  font-size: 10px;
+  line-height: 1.6;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+/* Pill controls. Landing: `.navCta` (1px currentColor, 100px radius, fills blue on hover). */
+.pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border: 1px solid currentColor;
+  border-radius: 100px;
+  padding: 7px 12px;
+  min-height: 30px;
+  font-family: var(--font-mono);
+  font-weight: 500;
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  line-height: 1;
+  transition: background 0.2s, color 0.2s, transform 0.2s;
+}
+.pill:hover, .pill[aria-pressed="true"], .pill[aria-selected="true"] { background: var(--blue); color: var(--paper); }
+
+/* Blinking caret for typed content. */
+@keyframes caret-blink {
+  0%, 49% { opacity: 1; }
+  50%, 100% { opacity: 0; }
+}
+.caret::after {
+  content: "";
+  display: inline-block;
+  width: 0.55em;
+  height: 1.05em;
+  margin-left: 2px;
+  vertical-align: text-bottom;
+  background: var(--blue);
+  animation: caret-blink 0.9s step-end infinite;
+}
+
+/* Ring pulse. Landing thesis `.now .stop::before`. */
+@keyframes ring {
+  0% { box-shadow: 0 0 0 0 #be5b3680; }
+  100% { box-shadow: 0 0 0 14px #be5b3600; }
+}
+.hot { animation: ring 2.4s ease-out infinite; }
+
+@media (prefers-reduced-motion: reduce) {
+  .caret::after, .hot { animation: none; }
+}
+
+/*
+ * The Inbox tab keeps the pre-restyle pine/cream look on purpose (a mail client
+ * should look like a mail client, not like the landing page). Tailwind v4
+ * utilities such as `text-pine` and `bg-cream` resolve through these custom
+ * properties, so redefining them on the Inbox root re-skins that subtree only;
+ * the nav above it stays on the two-ink system. See docs/design-source.md.
+ */
+.inbox-classic {
+  --color-pine: rgb(16 61 58);
+  --color-pine-deep: rgb(10 44 42);
+  --color-sage: rgb(14 106 92);
+  --color-sage-bright: rgb(70 182 172);
+  --color-cream: rgb(251 247 239);
+  --color-cream-soft: rgb(246 240 228);
+  --color-hairline: rgb(230 218 196);
+  --color-hairline-dark: rgb(223 214 192);
+  --color-ink: rgb(42 36 34);
+  --color-ink-soft: rgb(92 84 78);
+  --color-ember: rgb(190 91 54);
+  --color-console: rgb(13 32 30);
+  --color-console-line: rgb(30 66 62);
+  --font-display: var(--font-playfair), Georgia, serif;
+  background: var(--color-cream);
+  color: var(--color-ink);
+  letter-spacing: 0;
+}
+.inbox-classic ::selection {
+  background: var(--color-sage-bright);
+  color: var(--color-pine-deep);
+}
+.inbox-classic .eyebrow {
+  font-weight: 400;
+  font-size: 0.75rem;
+  line-height: normal;
+}
